@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — ABFY</title>
+  <meta name="description" content="Neem contact op met ABFY voor vragen over boekhouding, aangiften of financieel advies." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header id="site-header" class="site-header"></header>
+
+  <main>
+    <section class="ledger-section tight">
+      <div class="container">
+        <p class="eyebrow">Contact</p>
+        <h1>Laten we kennismaken.</h1>
+        <p class="lead" style="max-width: 55ch;">
+          Even sparren of direct hulp nodig? Vul het formulier in of neem
+          rechtstreeks contact op — we reageren snel.
+        </p>
+
+        <div class="contact-grid">
+          <div class="contact-info">
+            <dl>
+              <dt>E-mail</dt>
+              <dd><a href="mailto:info@abfy.nl">info@abfy.nl</a></dd>
+
+              <dt>Socials</dt>
+              <dd>
+                <a href="https://instagram.com/abfy_bk" target="_blank" rel="noopener">Instagram</a> ·
+                <a href="https://www.facebook.com/people/ABFY-Accounting-Business-For-You/100088247887144/" target="_blank" rel="noopener">Facebook</a>
+              </dd>
+
+              <dt>Regio</dt>
+              <dd>Zuid-Limburg</dd>
+
+              <dt>Openingstijden</dt>
+              <dd>
+                <table class="hours-table">
+                  <tr><td>Maandag</td><td>9:00 – 16:00</td></tr>
+                  <tr><td>Dinsdag</td><td>9:00 – 16:00</td></tr>
+                  <tr><td>Woensdag</td><td>9:00 – 16:00</td></tr>
+                  <tr><td>Donderdag</td><td>9:00 – 16:00</td></tr>
+                  <tr><td>Vrijdag</td><td>9:00 – 16:00</td></tr>
+                  <tr><td>Zaterdag</td><td>9:00 – 16:00</td></tr>
+                </table>
+              </dd>
+            </dl>
+          </div>
+
+          <form id="contact-form" class="contact-form" data-endpoint="https://formspree.io/f/JOUW_FORM_ID">
+            <div class="field">
+              <label for="name">Naam</label>
+              <input type="text" id="name" name="name" required />
+            </div>
+            <div class="field">
+              <label for="email">E-mailadres</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+            <div class="field">
+              <label for="subject">Onderwerp</label>
+              <input type="text" id="subject" name="subject" />
+            </div>
+            <div class="field">
+              <label for="message">Bericht</label>
+              <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Bericht versturen</button>
+            <p id="form-status" class="form-status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+  <script src="js/components.js"></script>
+</body>
+</html>
