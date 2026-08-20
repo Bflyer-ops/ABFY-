@@ -1,13 +1,13 @@
 // ABFY — gedeelde componenten (header/footer), navigatie en kleine interacties.
-// Vanilla JS, geen build-stap nodig — werkt direct op Vercel of lokaal.
+// Vanilla JS, geen build-stap nodig.
 
 (function () {
   const NAV_ITEMS = [
     { href: 'index.html', label: 'Home' },
-    { href: 'socials.html', label: 'Socials' },
-    { href: 'blog.html', label: 'Blog' },
+    { href: 'wie-zijn-wij.html', label: 'Wie zijn wij' },
     { href: 'prijzen.html', label: 'Prijzen' },
-    { href: 'contact.html', label: 'Contact' },
+    { href: 'blog.html', label: 'Blog' },
+    { href: 'socials.html', label: 'Socials' },
   ];
 
   function currentPage() {
@@ -25,10 +25,17 @@
         `<a href="${item.href}" class="${item.href === active ? 'active' : ''}">${item.label}</a>`
     ).join('');
 
+    const contactClass = active === 'contact.html' ? 'nav-cta active' : 'nav-cta';
+
     mount.innerHTML = `
       <div class="container">
-        <a href="index.html" class="brand">ABFY<span class="dot">.</span></a>
-        <nav class="main-nav" id="main-nav">${links}</nav>
+        <a href="index.html" class="brand">
+          <span class="brand-mark">AB</span>ABFY
+        </a>
+        <nav class="main-nav" id="main-nav">
+          ${links}
+          <a href="contact.html" class="${contactClass}">Contact</a>
+        </nav>
         <button class="nav-toggle" id="nav-toggle" aria-label="Menu openen" aria-expanded="false">
           <span></span>
         </button>
@@ -50,12 +57,13 @@
       <div class="container">
         <div class="footer-grid">
           <div>
-            <h4>ABFY</h4>
-            <p>Accounting Business For You. Boekhouding, aangiften en financieel advies voor zzp'ers en kleine ondernemers in Zuid-Limburg.</p>
+            <div class="footer-brand">ABFY</div>
+            <p>Accounting Business For You. Persoonlijke boekhouding, aangiften en financieel advies voor zzp'ers en kleine ondernemers in Zuid-Limburg.</p>
           </div>
           <div>
             <h4>Snel naar</h4>
             <ul>
+              <li><a href="wie-zijn-wij.html">Wie zijn wij</a></li>
               <li><a href="prijzen.html">Pakketten &amp; prijzen</a></li>
               <li><a href="blog.html">Blog</a></li>
               <li><a href="contact.html">Contact</a></li>
@@ -78,7 +86,7 @@
     `;
   }
 
-  // Signature element: ledger rows tick in one by one when scrolled into view.
+  // Checklist ticks in one row at a time when scrolled into view.
   function initLedgerAnimation() {
     const rows = document.querySelectorAll('.ledger-row');
     if (!rows.length) return;
@@ -93,13 +101,13 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             rows.forEach((row, i) => {
-              setTimeout(() => row.classList.add('is-visible'), i * 220);
+              setTimeout(() => row.classList.add('is-visible'), i * 200);
             });
             observer.disconnect();
           }
         });
       },
-      { threshold: 0.4 }
+      { threshold: 0.35 }
     );
     observer.observe(rows[0].closest('.ledger-card'));
   }
@@ -114,7 +122,6 @@
       e.preventDefault();
       const endpoint = form.getAttribute('data-endpoint');
       const data = new FormData(form);
-
       const isConfigured = endpoint && !endpoint.includes('JOUW_FORM_ID');
 
       if (!isConfigured) {

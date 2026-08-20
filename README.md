@@ -6,66 +6,58 @@ Administratiekantoor Zuid-Limburg.
 ## Structuur
 
 ```
-index.html        Home
-prijzen.html      Pakketten & prijzen
-socials.html      Instagram/Facebook
-blog.html         Blog (voorbeeldposts, later aan te vullen)
-contact.html      Contactformulier
-style.css         Alle styling
-components.js     Header/footer, navigatie, animatie, contactformulier
+index.html         Home
+wie-zijn-wij.html  Over Bjorn & Kitana
+prijzen.html       Pakketten & prijzen
+blog.html          Blog
+socials.html       Instagram/Facebook
+contact.html       Contactformulier
+style.css          Alle styling
+components.js      Header/footer, navigatie, animatie, contactformulier
 ```
 
-## Lokaal bekijken
+Alle bestanden staan bewust in dezelfde map (geen submappen), zodat uploaden
+via de GitHub-webinterface zonder problemen werkt.
 
-Open `index.html` gewoon in je browser, of start een kleine lokale server
-(handig omdat sommige browsers relatieve paden anders behandelen):
+## Jullie foto's toevoegen
 
-```bash
-npx serve .
-```
+Op `wie-zijn-wij.html` staan nu tijdelijke plaatshouders met de initialen B en K.
+Zodra jullie foto's hebben:
 
-## Naar GitHub
+1. Noem de bestanden `bjorn.jpg` en `kitana.jpg` en upload ze naar dezelfde map
+   als de HTML-bestanden.
+2. Open `wie-zijn-wij.html` en zoek het blok:
+   ```html
+   <div class="portrait__placeholder">
+     <span class="portrait__initials">B</span>
+     Foto volgt
+   </div>
+   ```
+3. Vervang dat hele blok door:
+   ```html
+   <img src="bjorn.jpg" alt="Bjorn, mede-oprichter van ABFY" />
+   ```
+4. Doe hetzelfde voor Kitana met `kitana.jpg`.
 
-```bash
-cd abfy-website
-git init
-git add .
-git commit -m "Eerste versie ABFY website"
-git branch -M main
-git remote add origin https://github.com/<jouw-gebruikersnaam>/abfy-website.git
-git push -u origin main
-```
-
-## Naar Vercel
-
-1. Ga naar [vercel.com](https://vercel.com) en log in met je GitHub-account.
-2. Klik op **Add New Project** en selecteer de `abfy-website` repository.
-3. Vercel herkent dit als een statisch project — er hoeft niets aangepast te
-   worden aan de build-instellingen (geen framework, geen build command).
-4. Klik op **Deploy**.
-5. Voeg daarna je eigen domein toe via **Project Settings → Domains** en volg
-   de DNS-instructies (in te stellen in het domeinbeheer-paneel van Strato,
-   niet de website builder).
+Tip voor de foto's: staand formaat (verhouding 4:5), rustige effen achtergrond,
+daglicht van opzij. Fotografeer beiden op dezelfde plek en met dezelfde
+belichting — dan staan de twee portretten naast elkaar rustig op de pagina.
 
 ## Contactformulier activeren
 
-Het formulier op `contact.html` gebruikt nu een tijdelijke fallback: bij
-versturen opent het gewoon een e-mail naar `info@abfy.nl`. Wil je échte
-formulierinzendingen (zonder eigen backend)?
+Het formulier op `contact.html` opent nu een e-mail naar `info@abfy.nl`.
+Voor echte formulierinzendingen:
 
 1. Maak een gratis account op [formspree.io](https://formspree.io).
-2. Maak een nieuw formulier aan en kopieer de endpoint-URL.
-3. Vervang in `contact.html` het attribuut:
-   ```html
-   data-endpoint="https://formspree.io/f/JOUW_FORM_ID"
-   ```
-   door je eigen Formspree-URL.
+2. Maak een formulier aan en kopieer de endpoint-URL.
+3. Vervang in `contact.html` het attribuut
+   `data-endpoint="https://formspree.io/f/JOUW_FORM_ID"` door je eigen URL.
 
-## Later uitbreiden
+## Bijwerken op GitHub
 
-- **Eigen logo**: zet een SVG/PNG in de hoofdmap en vervang de tekstuele "ABFY"
-  in `components.js` (functie `renderHeader`) door een `<img>`.
-- **Echte blogposts**: de blogkaarten in `blog.html` zijn nu statisch. Voor
-  een uitbreidbare blog (met een CMS) is een overstap naar bijvoorbeeld
-  Next.js op een later moment een logische vervolgstap — dat werkt ook
-  probleemloos op Vercel.
+Upload de bestanden via **Add file → Upload files** in je repository en klik op
+**Commit changes**. Vercel deployt daarna automatisch binnen een minuut.
+
+Let op: het oude bestand `wie-zijn-wij.html` bestond nog niet, en de bestanden
+`css/style.css` en `js/components.js` (met submap) zijn niet meer nodig — als
+die nog in je repo staan, kun je ze verwijderen.
