@@ -6,15 +6,13 @@ Administratiekantoor Zuid-Limburg.
 ## Structuur
 
 ```
-abfy-website/
-├── index.html       Home
-├── prijzen.html      Pakketten & prijzen
-├── socials.html      Instagram/Facebook
-├── blog.html         Blog (voorbeeldposts, later aan te vullen)
-├── contact.html       Contactformulier
-├── css/style.css     Alle styling
-├── js/components.js  Header/footer, navigatie, animatie, contactformulier
-└── assets/           (leeg — hier kun je eigen logo/afbeeldingen plaatsen)
+index.html        Home
+prijzen.html      Pakketten & prijzen
+socials.html      Instagram/Facebook
+blog.html         Blog (voorbeeldposts, later aan te vullen)
+contact.html      Contactformulier
+style.css         Alle styling
+components.js     Header/footer, navigatie, animatie, contactformulier
 ```
 
 ## Lokaal bekijken
@@ -65,8 +63,8 @@ formulierinzendingen (zonder eigen backend)?
 
 ## Later uitbreiden
 
-- **Eigen logo**: zet een SVG/PNG in `assets/` en vervang de tekstuele "ABFY"
-  in `js/components.js` (functie `renderHeader`) door een `<img>`.
+- **Eigen logo**: zet een SVG/PNG in de hoofdmap en vervang de tekstuele "ABFY"
+  in `components.js` (functie `renderHeader`) door een `<img>`.
 - **Echte blogposts**: de blogkaarten in `blog.html` zijn nu statisch. Voor
   een uitbreidbare blog (met een CMS) is een overstap naar bijvoorbeeld
   Next.js op een later moment een logische vervolgstap — dat werkt ook
