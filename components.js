@@ -29,8 +29,8 @@
 
     mount.innerHTML = `
       <div class="container">
-        <a href="index.html" class="brand">
-          <span class="brand-mark">AB</span>ABFY
+        <a href="index.html" class="brand" aria-label="ABFY — naar de homepage">
+          <img src="logo-groen.png" alt="ABFY — Accounting Business For You" class="brand-logo" width="420" height="171" />
         </a>
         <nav class="main-nav" id="main-nav">
           ${links}
@@ -57,8 +57,8 @@
       <div class="container">
         <div class="footer-grid">
           <div>
-            <div class="footer-brand">ABFY</div>
-            <p>Accounting Business For You. Persoonlijke boekhouding, aangiften en financieel advies voor zzp'ers en kleine ondernemers in Zuid-Limburg.</p>
+            <img src="logo-wit.png" alt="ABFY — Accounting Business For You" class="footer-logo" width="420" height="171" />
+            <p>Accounting Business For You. Administratiekantoor in Heerlen. Persoonlijke boekhouding, aangiften en financieel advies voor zzp'ers en kleine ondernemers in Zuid-Limburg.</p>
           </div>
           <div>
             <h4>Snel naar</h4>
@@ -80,7 +80,7 @@
         </div>
         <div class="footer-bottom">
           <span>&copy; ${new Date().getFullYear()} ABFY — Bjorn &amp; Kitana</span>
-          <span>Zuid-Limburg</span>
+          <span>Heerlen · Zuid-Limburg</span>
         </div>
       </div>
     `;

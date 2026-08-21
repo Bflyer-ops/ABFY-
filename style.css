@@ -124,17 +124,15 @@ a { color: inherit; text-decoration: none; }
 .site-header .container {
   display: flex; align-items: center; justify-content: space-between; height: 78px;
 }
-.brand {
-  font-family: var(--font-display);
-  font-weight: 700; font-size: 1.55rem;
-  color: var(--pine);
-  display: flex; align-items: center; gap: 9px;
+.brand { display: flex; align-items: center; }
+.brand-logo {
+  height: 42px; width: auto; display: block;
 }
-.brand-mark {
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--green);
-  display: inline-flex; align-items: center; justify-content: center;
-  color: var(--paper); font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;
+.footer-logo {
+  height: 46px; width: auto; display: block; margin-bottom: 16px;
+}
+.hero-logo {
+  height: 64px; width: auto; display: block; margin-bottom: 28px;
 }
 
 .main-nav { display: flex; align-items: center; gap: 4px; }
@@ -494,6 +492,8 @@ a { color: inherit; text-decoration: none; }
   .main-nav.open a { text-align: center; }
   .main-nav.open a.nav-cta { margin-left: 0; margin-top: 6px; }
   .nav-toggle { display: flex; }
+  .brand-logo { height: 34px; }
+  .footer-logo { height: 40px; }
 }
 
 @media (max-width: 620px) {

@@ -20,6 +20,26 @@ components.js      Header/footer, navigatie, animatie, contactformulier
 Alle bestanden staan bewust in dezelfde map (geen submappen), zodat uploaden
 via de GitHub-webinterface zonder problemen werkt.
 
+## Logobestanden
+
+Uit het aangeleverde logo zijn deze versies gemaakt (achtergrond verwijderd,
+dus bruikbaar op elke kleur):
+
+| Bestand | Waarvoor |
+|---|---|
+| `logo-groen.png` | Header (op lichte achtergrond) |
+| `logo-wit.png` | Footer (op donkergroene achtergrond) |
+| `beeldmerk-groen.png` / `beeldmerk-wit.png` | Alleen het staafdiagram, zonder tekst |
+| `favicon.ico`, `favicon-16.png`, `favicon-32.png` | Icoon in het browsertabblad |
+| `apple-touch-icon.png` | Icoon als iemand de site op zijn telefoon bewaart |
+| `icon-512.png` | Groot icoon, o.a. voor Google |
+| `og-image.jpg` | Voorbeeldafbeelding bij delen via WhatsApp/Facebook/LinkedIn |
+
+## SEO
+
+Zie **SEO-HANDLEIDING.md** voor wat er in de site zit en wat je zelf nog moet
+doen om beter gevonden te worden.
+
 ## Jullie foto's toevoegen
 
 Op `wie-zijn-wij.html` staan nu tijdelijke plaatshouders met de initialen B en K.
