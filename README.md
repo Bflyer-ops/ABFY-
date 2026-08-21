@@ -9,7 +9,8 @@ Administratiekantoor Zuid-Limburg.
 index.html         Home
 wie-zijn-wij.html  Over Bjorn & Kitana
 prijzen.html       Pakketten & prijzen
-blog.html          Blog
+blog.html          Blogoverzicht
+blog-*.html        De drie blogartikelen
 socials.html       Instagram/Facebook
 contact.html       Contactformulier
 style.css          Alle styling
@@ -43,15 +44,55 @@ Tip voor de foto's: staand formaat (verhouding 4:5), rustige effen achtergrond,
 daglicht van opzij. Fotografeer beiden op dezelfde plek en met dezelfde
 belichting — dan staan de twee portretten naast elkaar rustig op de pagina.
 
-## Contactformulier activeren
+## Contactformulier — EENMALIG ACTIVEREN
 
-Het formulier op `contact.html` opent nu een e-mail naar `info@abfy.nl`.
-Voor echte formulierinzendingen:
+Het formulier stuurt berichten via FormSubmit naar **BK-abfy@hotmail.com**.
+Dit moet je één keer activeren, anders komt er niets binnen:
 
-1. Maak een gratis account op [formspree.io](https://formspree.io).
-2. Maak een formulier aan en kopieer de endpoint-URL.
-3. Vervang in `contact.html` het attribuut
-   `data-endpoint="https://formspree.io/f/JOUW_FORM_ID"` door je eigen URL.
+1. Zet de website live op Vercel.
+2. Vul het contactformulier op de live site één keer zelf in en verstuur het.
+3. Je krijgt een e-mail van FormSubmit op BK-abfy@hotmail.com met een
+   bevestigingslink. Klik die aan.
+4. Klaar — vanaf dat moment komen alle berichten binnen in je mailbox.
+
+Die eerste keer krijg je dus nog geen bericht, alleen de bevestigingsmail.
+Test daarna nog een keer om zeker te weten dat het werkt.
+
+## Bescherming tegen spam
+
+Er zitten al twee maatregelen in:
+
+**1. Het e-mailadres staat niet leesbaar in de broncode.**
+Op het formulier staat een gecodeerde waarde (`data-target`), die pas in de
+browser wordt omgezet naar het echte adres. Bots die de pagina uitlezen op zoek
+naar e-mailadressen vinden zo niets bruikbaars.
+
+**2. Een onzichtbare spamval (honeypot).**
+In het formulier zit een verborgen veld dat bezoekers niet zien, maar bots vaak
+automatisch invullen. Wordt het ingevuld, dan wordt het bericht niet verstuurd.
+Dat veld staat in `contact.html` — niet weghalen.
+
+### Nog een stap verder: de unieke code
+
+Wil je dat het adres helemaal niet meer in de website voorkomt? Na activatie
+kun je op formsubmit.co een unieke code voor je adres opvragen. Voeg die dan
+toe aan het formulier in `contact.html`:
+
+```html
+<form id="contact-form" class="contact-form"
+      data-target="QkstYWJmeUBob3RtYWlsLmNvbQ=="
+      data-code="JOUW_CODE_HIER">
+```
+
+De code krijgt automatisch voorrang. Daarna mag je `data-target` weghalen —
+het adres staat dan nergens meer in de site, ook niet gecodeerd.
+
+## Blogartikelen
+
+De drie artikelen staan in `blog-bonnetjes.html`, `blog-btw-deadlines.html` en
+`blog-zelf-of-uitbesteden.html`. Wil je een artikel toevoegen? Kopieer een
+bestaand artikelbestand, pas de tekst aan, en voeg op `blog.html` een nieuw
+kaartje toe dat ernaar verwijst.
 
 ## Bijwerken op GitHub
 

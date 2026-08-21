@@ -23,9 +23,6 @@
         <div class="contact-grid">
           <div class="contact-info">
             <dl>
-              <dt>E-mail</dt>
-              <dd><a href="mailto:info@abfy.nl">info@abfy.nl</a></dd>
-
               <dt>Socials</dt>
               <dd>
                 <a href="https://instagram.com/abfy_bk" target="_blank" rel="noopener">Instagram</a> ·
@@ -49,7 +46,7 @@
             </dl>
           </div>
 
-          <form id="contact-form" class="contact-form" data-endpoint="https://formspree.io/f/JOUW_FORM_ID">
+          <form id="contact-form" class="contact-form" data-target="QkstYWJmeUBob3RtYWlsLmNvbQ==">
             <div class="field">
               <label for="name">Naam</label>
               <input type="text" id="name" name="name" required />
@@ -66,6 +63,13 @@
               <label for="message">Bericht</label>
               <textarea id="message" name="message" required></textarea>
             </div>
+            <!-- Spamval: dit veld is onzichtbaar voor bezoekers. Wordt het ingevuld,
+                 dan is het een bot en versturen we het bericht niet. Niet verwijderen. -->
+            <div style="position:absolute; left:-9999px; top:-9999px;" aria-hidden="true">
+              <label for="website">Laat dit veld leeg</label>
+              <input type="text" id="website" name="_honey" tabindex="-1" autocomplete="off" />
+            </div>
+
             <button type="submit" class="btn btn-primary">Bericht versturen</button>
             <p id="form-status" class="form-status"></p>
           </form>

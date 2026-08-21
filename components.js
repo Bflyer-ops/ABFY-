@@ -72,7 +72,7 @@
           <div>
             <h4>Contact</h4>
             <ul>
-              <li><a href="mailto:info@abfy.nl">info@abfy.nl</a></li>
+              <li><a href="contact.html">Contactformulier</a></li>
               <li><a href="https://instagram.com/abfy_bk" target="_blank" rel="noopener">Instagram</a></li>
               <li><a href="https://www.facebook.com/people/ABFY-Accounting-Business-For-You/100088247887144/" target="_blank" rel="noopener">Facebook</a></li>
             </ul>
@@ -112,32 +112,62 @@
     observer.observe(rows[0].closest('.ledger-card'));
   }
 
-  // Contact form: posts to Formspree if configured, otherwise falls back to mailto.
+  // Contact form: verstuurt via FormSubmit naar de mailbox van ABFY.
+  //
+  // Het ontvangstadres staat NIET leesbaar in de broncode. Het formulier draagt
+  // een gecodeerde waarde (data-target) die hier pas wordt omgezet. Zo vinden
+  // spambots die de pagina uitlezen geen e-mailadres.
+  //
+  // Heb je van FormSubmit een unieke code gekregen? Zet die dan op het
+  // formulier als data-code="jouwcode" — dan wordt die gebruikt en is het
+  // adres helemaal niet meer in de site aanwezig.
+  function resolveEndpoint(form) {
+    const code = form.getAttribute('data-code');
+    if (code && !code.includes('JOUW_CODE')) {
+      return 'https://formsubmit.co/ajax/' + code;
+    }
+    const encoded = form.getAttribute('data-target');
+    if (!encoded) return null;
+    try {
+      return 'https://formsubmit.co/ajax/' + atob(encoded);
+    } catch (err) {
+      return null;
+    }
+  }
+
   function initContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) return;
     const status = document.getElementById('form-status');
+    const button = form.querySelector('button[type="submit"]');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const endpoint = form.getAttribute('data-endpoint');
       const data = new FormData(form);
-      const isConfigured = endpoint && !endpoint.includes('JOUW_FORM_ID');
 
-      if (!isConfigured) {
-        const name = data.get('name') || '';
-        const email = data.get('email') || '';
-        const message = data.get('message') || '';
-        const subject = encodeURIComponent('Contact via website — ' + name);
-        const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
-        window.location.href = `mailto:info@abfy.nl?subject=${subject}&body=${body}`;
-        status.textContent = 'Je e-mailprogramma wordt geopend om het bericht te versturen.';
+      // Spamval: alleen bots vullen dit onzichtbare veld in.
+      if (data.get('_honey')) {
+        status.textContent = 'Bedankt! Je bericht is verzonden.';
         status.className = 'form-status success';
+        form.reset();
         return;
       }
 
+      const endpoint = resolveEndpoint(form);
+      if (!endpoint) {
+        status.textContent =
+          'Het formulier is niet goed ingesteld. Stuur ons gerust een bericht via Instagram of Facebook.';
+        status.className = 'form-status error';
+        return;
+      }
+
+      data.append('_subject', 'Nieuw bericht via de ABFY-website');
+      data.append('_captcha', 'false');
+      data.append('_template', 'table');
+
       status.textContent = 'Bezig met versturen...';
       status.className = 'form-status';
+      if (button) button.disabled = true;
 
       try {
         const res = await fetch(endpoint, {
@@ -145,16 +175,21 @@
           body: data,
           headers: { Accept: 'application/json' },
         });
+
         if (res.ok) {
-          status.textContent = 'Bedankt! Je bericht is verzonden, we nemen snel contact op.';
+          status.textContent =
+            'Bedankt! Je bericht is verzonden — we nemen zo snel mogelijk contact met je op.';
           status.className = 'form-status success';
           form.reset();
         } else {
           throw new Error('Verzenden mislukt');
         }
       } catch (err) {
-        status.textContent = 'Er ging iets mis. Mail ons gerust rechtstreeks via info@abfy.nl.';
+        status.textContent =
+          'Er ging iets mis bij het versturen. Probeer het later nog eens, of stuur ons een bericht via Instagram of Facebook.';
         status.className = 'form-status error';
+      } finally {
+        if (button) button.disabled = false;
       }
     });
   }
