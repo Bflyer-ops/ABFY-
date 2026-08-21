@@ -22,22 +22,25 @@ Deze dingen zijn ingebouwd en vragen geen actie meer:
 
 ## Wat jij moet doen — in volgorde van belang
 
-### 1. Google Business Profile aanmaken (VERREWEG het belangrijkst)
+### 1. Google Business Profile aanvullen (VERREWEG het belangrijkst)
 
 Voor een lokaal kantoor levert dit meer op dan alles wat er in de code staat.
 Zoekt iemand op "boekhouder [plaatsnaam]", dan verschijnen de kaartresultaten
 bóven de gewone zoekresultaten. Zonder profiel sta je daar niet tussen.
 
-1. Ga naar [business.google.com](https://business.google.com).
-2. Maak een profiel aan voor ABFY, categorie **Accountant** of
-   **Administratiekantoor**.
-3. Vestigingsadres: **Sikkelhof, Heerlen**. Geef daarnaast je servicegebied op — de
-   gemeenten waar je klanten hebt (Kerkrade, Landgraaf, Brunssum,
-   Sittard-Geleen, Maastricht). Werk je vanuit huis en wil je je adres niet
-   publiek maken? Kies dan voor een servicegebied in plaats van een
-   vestigingsadres; Heerlen blijft dan wel je basis.
-4. Upload het logo en, zodra je ze hebt, jullie foto's.
-5. Vul openingstijden in en link naar www.abfy.nl.
+Het profiel bestaat al en je beheert het — mooi. Wat er nog te winnen valt:
+
+1. **Vul het profiel volledig in.** Google geeft zelf aan dat er nog gegevens
+   ontbreken. Elk ingevuld veld helpt.
+2. **Voeg een telefoonnummer toe** als dat er nog niet staat — Google noemt dit
+   expliciet, en klanten bellen liever dan dat ze een formulier invullen.
+3. **Geef je servicegebied op** — de gemeenten waar je klanten hebt
+   (Kerkrade, Landgraaf, Brunssum, Sittard-Geleen, Maastricht). Dat vergroot
+   je bereik buiten Heerlen.
+4. **Upload het logo** (gebruik `icon-512.png` uit deze map) en, zodra je ze
+   hebt, jullie portretfoto's.
+5. **Controleer of de website naar www.abfy.nl verwijst** zodra het domein
+   gekoppeld is.
 
 **Vraag daarna elke tevreden klant om een review.** Dit is de belangrijkste
 factor voor je positie in de kaartresultaten. Tien echte reviews zetten je
@@ -52,30 +55,15 @@ voorbij concurrenten die er drie hebben.
 4. Kijk hier na een paar weken welke zoektermen bezoekers opleveren — dat is
    gratis marktonderzoek.
 
-### 3. Vul huisnummer en postcode aan (5 minuten werk)
+### 3. Adres — al gedaan
 
-Heerlen en de straatnaam Sikkelhof staan er al in. Wat nog ontbreekt is het
-huisnummer en de postcode — die kon ik niet publiek terugvinden, en een
-verzonnen postcode zou je Google-vermelding juist schaden.
+Sikkelhof 30, 6418 JW Heerlen staat nu in de site verwerkt: zichtbaar op de
+contactpagina en in de gestructureerde data voor Google, inclusief de juiste
+coordinaten.
 
-**Aanpassen in `index.html`**, in het blok met gestructureerde data:
-
-```json
-"streetAddress": "Sikkelhof",     ->  "streetAddress": "Sikkelhof 12",
-"postalCode": "",                 ->  "postalCode": "6418 XX",
-```
-
-**En in `contact.html`**, bij het adresveld:
-
-```html
-<dd>Sikkelhof<br />Heerlen</dd>
-->
-<dd>Sikkelhof 12<br />6418 XX Heerlen</dd>
-```
-
-Zorg dat dit exact overeenkomt met wat er bij de KVK en straks in je Google
-Business Profile staat. Google vergelijkt die gegevens, en verschillen
-verzwakken je positie.
+Controleer wel of dit exact overeenkomt met wat er in je Google Business
+Profile en bij de KVK staat. Google vergelijkt die gegevens; verschillen in
+schrijfwijze verzwakken je positie.
 
 ### 4. Schrijf regelmatig een blogartikel
 

@@ -25,20 +25,25 @@ Staan deze nog in je repository? Verwijder ze — ze worden niet meer gebruikt:
 Verwijderen doe je door op het bestand te klikken → prullenbakicoon → **Commit
 changes**.
 
-## Wat je daarna nog moet doen
+## Wat er al geregeld is
 
-Twee dingen die je zelf moet afronden, allebei kort:
+- Domein abfy.nl gekoppeld aan Vercel (abfy.nl stuurt door naar www.abfy.nl)
+- Contactformulier geactiveerd en werkend
+- E-mailadres komt nergens in de website voor (unieke FormSubmit-code)
+- Adres Sikkelhof 30, 6418 JW Heerlen verwerkt in de site en de Google-data
+- Vier lagen spambescherming actief
 
-1. **Contactformulier activeren.** Vul op de live site het formulier één keer
-   zelf in. Je krijgt dan een bevestigingsmail van FormSubmit op
-   BK-abfy@hotmail.com — klik die link aan. Pas daarna komen berichten binnen.
-   Details staan in `README.md`.
+## Wat er nog te doen is
 
-2. **Huisnummer en postcode invullen.** Zie stap 3 in `SEO-HANDLEIDING.md`.
+**1. Jullie foto's** — op de pagina Wie zijn wij staan nu plaatshouders met de
+initialen B en K. Hoe je de foto's toevoegt staat in `README.md`.
 
-En als je één ding doet voor je vindbaarheid: maak een **Google Business
-Profile** aan. Dat levert voor een lokaal kantoor meer op dan alles wat er in
-de code staat. Uitleg staat bovenaan `SEO-HANDLEIDING.md`.
+**2. Google Business Profile aanvullen** — het profiel bestaat al, maar Google
+geeft aan dat er gegevens ontbreken (o.a. een telefoonnummer). Zet ook de
+website op www.abfy.nl. Zie stap 1 in `SEO-HANDLEIDING.md`.
+
+**3. Reviews vragen** aan tevreden klanten. Dit is de sterkste factor voor je
+positie in de Google-kaartresultaten.
 
 ## Bestandenoverzicht
 
@@ -60,3 +65,5 @@ de code staat. Uitleg staat bovenaan `SEO-HANDLEIDING.md`.
 
 **Documentatie (3)**
 `START-HIER.md` (dit bestand) · `README.md` · `SEO-HANDLEIDING.md`
+
+De documentatiebestanden (.md) zijn alleen voor jou — bezoekers zien ze niet.

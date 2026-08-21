@@ -114,25 +114,37 @@
 
   // Contact form: verstuurt via FormSubmit naar de mailbox van ABFY.
   //
-  // Het ontvangstadres staat NIET leesbaar in de broncode. Het formulier draagt
-  // een gecodeerde waarde (data-target) die hier pas wordt omgezet. Zo vinden
-  // spambots die de pagina uitlezen geen e-mailadres.
+  // Spambescherming, vier lagen:
+  //  1. Het e-mailadres staat helemaal niet in de website (unieke code).
+  //  2. Honeypot — een onzichtbaar veld dat alleen bots invullen.
+  //  3. Tijdslot — bots versturen binnen een seconde, mensen doen er langer over.
+  //  4. Linkfilter — berichten volgestopt met links zijn vrijwel altijd spam.
   //
-  // Heb je van FormSubmit een unieke code gekregen? Zet die dan op het
-  // formulier als data-code="jouwcode" — dan wordt die gebruikt en is het
-  // adres helemaal niet meer in de site aanwezig.
+  // Het formulier gebruikt de unieke FormSubmit-code (data-code). Het
+  // e-mailadres van ABFY komt daardoor nergens in de website voor.
   function resolveEndpoint(form) {
     const code = form.getAttribute('data-code');
-    if (code && !code.includes('JOUW_CODE')) {
-      return 'https://formsubmit.co/ajax/' + code;
-    }
-    const encoded = form.getAttribute('data-target');
-    if (!encoded) return null;
-    try {
-      return 'https://formsubmit.co/ajax/' + atob(encoded);
-    } catch (err) {
-      return null;
-    }
+    if (!code) return null;
+    return 'https://formsubmit.co/ajax/' + code;
+  }
+
+  function lijktOpSpam(data, geopendOp) {
+    // Honeypot ingevuld = bot.
+    if (data.get('_honey')) return true;
+
+    // Sneller dan 3 seconden ingevuld = bot. Een mens typt niet zo snel.
+    if (Date.now() - geopendOp < 3000) return true;
+
+    const bericht = String(data.get('message') || '');
+
+    // Drie of meer links in een bericht: vrijwel altijd spam.
+    const links = (bericht.match(/https?:\/\/|www\./gi) || []).length;
+    if (links >= 3) return true;
+
+    // Losse BBCode-links zijn een klassiek spampatroon.
+    if (/\[url[=\]]/i.test(bericht)) return true;
+
+    return false;
   }
 
   function initContactForm() {
@@ -140,13 +152,15 @@
     if (!form) return;
     const status = document.getElementById('form-status');
     const button = form.querySelector('button[type="submit"]');
+    const geopendOp = Date.now();
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = new FormData(form);
 
-      // Spamval: alleen bots vullen dit onzichtbare veld in.
-      if (data.get('_honey')) {
+      // Spam wordt stil geweigerd: de bot krijgt een "gelukt"-melding te zien,
+      // zodat hij niet doorheeft dat hij tegengehouden is.
+      if (lijktOpSpam(data, geopendOp)) {
         status.textContent = 'Bedankt! Je bericht is verzonden.';
         status.className = 'form-status success';
         form.reset();

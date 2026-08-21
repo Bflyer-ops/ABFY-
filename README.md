@@ -45,8 +45,8 @@ doen om beter gevonden te worden.
 Op `wie-zijn-wij.html` staan nu tijdelijke plaatshouders met de initialen B en K.
 Zodra jullie foto's hebben:
 
-1. Noem de bestanden `bjorn.jpg` en `kitana.jpg` en upload ze naar dezelfde map
-   als de HTML-bestanden.
+1. Noem de bestanden `bjorn.jpg` en `kitana.jpg` en upload ze naar dezelfde map als de
+   HTML-bestanden.
 2. Open `wie-zijn-wij.html` en zoek het blok:
    ```html
    <div class="portrait__placeholder">
@@ -64,48 +64,37 @@ Tip voor de foto's: staand formaat (verhouding 4:5), rustige effen achtergrond,
 daglicht van opzij. Fotografeer beiden op dezelfde plek en met dezelfde
 belichting — dan staan de twee portretten naast elkaar rustig op de pagina.
 
-## Contactformulier — EENMALIG ACTIVEREN
+## Contactformulier
 
-Het formulier stuurt berichten via FormSubmit naar **BK-abfy@hotmail.com**.
-Dit moet je één keer activeren, anders komt er niets binnen:
+Het formulier verstuurt berichten via FormSubmit naar de mailbox van ABFY.
+Het is geactiveerd en werkt — er hoeft niets meer te gebeuren.
 
-1. Zet de website live op Vercel.
-2. Vul het contactformulier op de live site één keer zelf in en verstuur het.
-3. Je krijgt een e-mail van FormSubmit op BK-abfy@hotmail.com met een
-   bevestigingslink. Klik die aan.
-4. Klaar — vanaf dat moment komen alle berichten binnen in je mailbox.
+Het e-mailadres staat **niet** in de website. In plaats daarvan gebruikt het
+formulier een unieke FormSubmit-code (`data-code` in `contact.html`). Die code
+is aan het adres gekoppeld, maar er niet uit af te leiden.
 
-Die eerste keer krijg je dus nog geen bericht, alleen de bevestigingsmail.
-Test daarna nog een keer om zeker te weten dat het werkt.
+Verandert het ontvangstadres ooit? Vraag dan op formsubmit.co een nieuwe code
+aan voor het nieuwe adres en vervang de waarde van `data-code`.
 
 ## Bescherming tegen spam
 
-Er zitten al twee maatregelen in:
+Er zitten vier lagen in:
 
 **1. Het e-mailadres staat niet leesbaar in de broncode.**
-Op het formulier staat een gecodeerde waarde (`data-target`), die pas in de
-browser wordt omgezet naar het echte adres. Bots die de pagina uitlezen op zoek
-naar e-mailadressen vinden zo niets bruikbaars.
+Op het formulier staat een gecodeerde waarde die pas in de browser wordt
+omgezet. Bots die pagina's afstruinen op zoek naar e-mailadressen vinden niets.
 
-**2. Een onzichtbare spamval (honeypot).**
-In het formulier zit een verborgen veld dat bezoekers niet zien, maar bots vaak
-automatisch invullen. Wordt het ingevuld, dan wordt het bericht niet verstuurd.
-Dat veld staat in `contact.html` — niet weghalen.
+**2. Honeypot.** Een verborgen veld dat bezoekers niet zien maar bots vaak
+automatisch invullen. Wordt het ingevuld, dan gaat het bericht niet door.
 
-### Nog een stap verder: de unieke code
+**3. Tijdslot.** Een bericht dat binnen 3 seconden na het openen van de pagina
+wordt verstuurd is van een bot — een mens typt niet zo snel.
 
-Wil je dat het adres helemaal niet meer in de website voorkomt? Na activatie
-kun je op formsubmit.co een unieke code voor je adres opvragen. Voeg die dan
-toe aan het formulier in `contact.html`:
+**4. Linkfilter.** Berichten met drie of meer links, of met BBCode-links,
+worden geweigerd. Een klant die zijn eigen website noemt komt gewoon door.
 
-```html
-<form id="contact-form" class="contact-form"
-      data-target="QkstYWJmeUBob3RtYWlsLmNvbQ=="
-      data-code="JOUW_CODE_HIER">
-```
-
-De code krijgt automatisch voorrang. Daarna mag je `data-target` weghalen —
-het adres staat dan nergens meer in de site, ook niet gecodeerd.
+Geblokkeerde berichten krijgen een "verzonden"-melding te zien, zodat bots niet
+doorhebben dat ze tegengehouden zijn en het niet blijven proberen.
 
 ## Blogartikelen
 
