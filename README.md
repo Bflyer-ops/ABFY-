@@ -40,29 +40,22 @@ dus bruikbaar op elke kleur):
 Zie **SEO-HANDLEIDING.md** voor wat er in de site zit en wat je zelf nog moet
 doen om beter gevonden te worden.
 
-## Jullie foto's toevoegen
+## Foto's
 
-Op `wie-zijn-wij.html` staan nu tijdelijke plaatshouders met de initialen B en K.
-Zodra jullie foto's hebben:
+De portretten van Bjorn en Kitana staan op de pagina Wie zijn wij, en samen
+op de homepage. Ze zijn bijgesneden naar staand 4:5 en geoptimaliseerd voor
+snel laden.
 
-1. Noem de bestanden `bjorn.jpg` en `kitana.jpg` en upload ze naar dezelfde map als de
-   HTML-bestanden.
-2. Open `wie-zijn-wij.html` en zoek het blok:
-   ```html
-   <div class="portrait__placeholder">
-     <span class="portrait__initials">B</span>
-     Foto volgt
-   </div>
-   ```
-3. Vervang dat hele blok door:
-   ```html
-   <img src="bjorn.jpg" alt="Bjorn, mede-oprichter van ABFY" />
-   ```
-4. Doe hetzelfde voor Kitana met `kitana.jpg`.
+| Bestand | Waar |
+|---|---|
+| `bjorn.jpg` | Wie zijn wij |
+| `kitana.jpg` | Wie zijn wij |
+| `bjorn-kitana.jpg` | Homepage, naast de introtekst |
+| `og-image.jpg` | Voorbeeld bij delen via WhatsApp/Facebook/LinkedIn |
 
-Tip voor de foto's: staand formaat (verhouding 4:5), rustige effen achtergrond,
-daglicht van opzij. Fotografeer beiden op dezelfde plek en met dezelfde
-belichting — dan staan de twee portretten naast elkaar rustig op de pagina.
+Wil je later een foto vervangen? Zorg voor staand formaat (4:5) en een breedte
+van ongeveer 900 pixels, en gebruik dezelfde bestandsnaam — dan hoeft er in de
+code niets te veranderen.
 
 ## Contactformulier
 

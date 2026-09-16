@@ -268,7 +268,7 @@ a { color: inherit; text-decoration: none; }
   display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
 }
-.portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; }
 .portrait__placeholder {
   text-align: center; padding: 24px;
   font-family: var(--font-mono); font-size: 0.76rem;
@@ -318,6 +318,33 @@ a { color: inherit; text-decoration: none; }
 }
 .story-item h3 { font-size: 1.12rem; margin: 0.3em 0 0.35em; }
 .story-item p { font-size: 0.94rem; margin: 0; }
+
+/* ==========================================================================
+   Intro met portretten (homepage)
+   ========================================================================== */
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.85fr;
+  gap: 56px;
+  align-items: center;
+}
+.intro-fotos { margin: 0; }
+.intro-fotos img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 26px 52px -30px rgba(16, 49, 41, 0.45);
+}
+.intro-fotos figcaption {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-top: 14px;
+  text-align: center;
+}
 
 /* ==========================================================================
    CTA band
@@ -474,6 +501,7 @@ a { color: inherit; text-decoration: none; }
   .services-grid { grid-template-columns: repeat(2, 1fr); }
   .usp-grid { grid-template-columns: 1fr; }
   .team-grid { grid-template-columns: 1fr; }
+  .intro-grid { grid-template-columns: 1fr; gap: 36px; }
   .values-grid { grid-template-columns: 1fr; }
   .social-grid { grid-template-columns: 1fr; }
   .blog-grid { grid-template-columns: 1fr; }

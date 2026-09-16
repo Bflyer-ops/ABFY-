@@ -32,17 +32,15 @@ changes**.
 - E-mailadres komt nergens in de website voor (unieke FormSubmit-code)
 - Adres Sikkelhof 30, 6418 JW Heerlen verwerkt in de site en de Google-data
 - Vier lagen spambescherming actief
+- Portretfoto's van Bjorn en Kitana geplaatst
 
 ## Wat er nog te doen is
 
-**1. Jullie foto's** — op de pagina Wie zijn wij staan nu plaatshouders met de
-initialen B en K. Hoe je de foto's toevoegt staat in `README.md`.
-
-**2. Google Business Profile aanvullen** — het profiel bestaat al, maar Google
+**1. Google Business Profile aanvullen** — het profiel bestaat al, maar Google
 geeft aan dat er gegevens ontbreken (o.a. een telefoonnummer). Zet ook de
 website op www.abfy.nl. Zie stap 1 in `SEO-HANDLEIDING.md`.
 
-**3. Reviews vragen** aan tevreden klanten. Dit is de sterkste factor voor je
+**2. Reviews vragen** aan tevreden klanten. Dit is de sterkste factor voor je
 positie in de Google-kaartresultaten.
 
 ## Bestandenoverzicht
