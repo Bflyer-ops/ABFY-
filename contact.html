@@ -77,11 +77,17 @@
             </dl>
           </div>
 
-          <!-- Het formulier verstuurt rechtstreeks naar FormSubmit (gewone POST,
-               geen achtergrondverzoek). Dat is de meest betrouwbare route: geen
-               CORS, en bij een probleem zie je de echte foutmelding.
-               Na verzenden komt de bezoeker op bedankt.html. -->
+          <!-- Verzendt op de achtergrond naar FormSubmit. Lukt dat, dan gaat de
+               bezoeker naar bedankt.html. Lukt het niet (storing bij de
+               formulierdienst), dan blijft hij op deze pagina met zijn tekst
+               nog in het formulier, en krijgt hij alternatieven te zien.
+
+               Van dienst wisselen? Pas alleen data-endpoint hieronder aan.
+               Het action-attribuut dient als noodroute voor bezoekers zonder
+               JavaScript en moet dan dezelfde dienst aanwijzen. -->
           <form id="contact-form" class="contact-form"
+                data-endpoint="https://formsubmit.co/ajax/c1bc93c1ef29e2bdb5857100ead03d1e"
+                data-bedankt="bedankt.html"
                 action="https://formsubmit.co/c1bc93c1ef29e2bdb5857100ead03d1e"
                 method="POST">
 

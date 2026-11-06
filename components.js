@@ -161,8 +161,16 @@
   function initContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) return;
+
+    // Maar één keer instellen. Zou het script onverhoopt twee keer geladen
+    // worden, dan zou het formulier anders twee verzend-handlers krijgen en
+    // elkaars meldingen overschrijven.
+    if (form.dataset.initialized === '1') return;
+    form.dataset.initialized = '1';
+
     const status = document.getElementById('form-status');
     const telefoon = form.querySelector('#phone');
+    const button = form.querySelector('button[type="submit"]');
     const geopendOp = Date.now();
 
     function toonVeldfout(veld, bericht) {
@@ -190,15 +198,35 @@
       telefoon.addEventListener('input', () => wisVeldfout(telefoon));
     }
 
-    form.addEventListener('submit', (e) => {
+    function toonStatus(tekst, soort) {
+      if (!status) return;
+      status.innerHTML = '';
+      status.textContent = tekst;
+      status.className = 'form-status' + (soort ? ' ' + soort : '');
+    }
+
+    // Storing bij de formulierdienst: eerlijk zijn over wat er aan de hand is,
+    // en de bezoeker een andere weg naar ons wijzen.
+    function toonStoring() {
+      if (!status) return;
+      status.className = 'form-status error';
+      status.innerHTML =
+        '<strong>Het versturen lukt nu even niet.</strong> ' +
+        'Onze formulierdienst is tijdelijk onbereikbaar — dit ligt niet aan jou. ' +
+        'Je bericht staat nog in het formulier, dus je kunt het over een paar ' +
+        'minuten gewoon opnieuw proberen.<br />' +
+        'Liever niet wachten? Stuur ons een bericht via ' +
+        '<a href="https://instagram.com/abfy_bk" target="_blank" rel="noopener">Instagram</a> of ' +
+        '<a href="https://www.facebook.com/people/ABFY-Accounting-Business-For-You/100088247887144/" target="_blank" rel="noopener">Facebook</a>.';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
       // Spam: stil tegenhouden. De bot ziet een "gelukt"-melding en heeft niet
       // door dat het bericht nergens heen gaat.
       if (lijktOpSpam(form, geopendOp)) {
-        e.preventDefault();
-        if (status) {
-          status.textContent = 'Bedankt! Je bericht is verzonden.';
-          status.className = 'form-status success';
-        }
+        toonStatus('Bedankt! Je bericht is verzonden.', 'success');
         form.reset();
         return;
       }
@@ -207,22 +235,52 @@
       if (telefoon) {
         const fout = telefoonOngeldig(telefoon.value);
         if (fout) {
-          e.preventDefault();
           toonVeldfout(telefoon, fout);
           telefoon.focus();
-          if (status) {
-            status.textContent = '';
-            status.className = 'form-status';
-          }
+          toonStatus('', '');
           return;
         }
         wisVeldfout(telefoon);
       }
 
-      // Alles in orde: het formulier wordt nu gewoon verstuurd naar FormSubmit.
-      if (status) {
-        status.textContent = 'Bezig met versturen...';
-        status.className = 'form-status';
+      const endpoint = form.getAttribute('data-endpoint');
+      if (!endpoint) {
+        // Geen endpoint ingesteld: val terug op een gewone verzending.
+        form.submit();
+        return;
+      }
+
+      const data = new FormData(form);
+      toonStatus('Bezig met versturen...', '');
+      if (button) button.disabled = true;
+
+      // Tijdslimiet: hangt de formulierdienst, dan niet eindeloos wachten.
+      const afbreken = new AbortController();
+      const klok = setTimeout(() => afbreken.abort(), 15000);
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          body: data,
+          headers: { Accept: 'application/json' },
+          signal: afbreken.signal,
+        });
+        clearTimeout(klok);
+
+        if (!res.ok) throw new Error('Status ' + res.status);
+
+        // Gelukt: door naar de bedankpagina.
+        const bedankt = form.getAttribute('data-bedankt') || 'bedankt.html';
+        window.location.href = bedankt;
+      } catch (err) {
+        clearTimeout(klok);
+        if (button) button.disabled = false;
+
+        // BELANGRIJK: het formulier wordt NIET geleegd. De bezoeker houdt zijn
+        // tekst, zodat hij het zo opnieuw kan proberen.
+        toonStoring();
+        // Voor het geval je later wilt nakijken wat er precies misging:
+        if (window.console) console.warn('Verzenden mislukt:', err);
       }
     });
   }
