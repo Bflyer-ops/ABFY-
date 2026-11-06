@@ -62,6 +62,11 @@ code niets te veranderen.
 Het formulier verstuurt berichten via FormSubmit naar de mailbox van ABFY.
 Het is geactiveerd en werkt — er hoeft niets meer te gebeuren.
 
+**Verplichte velden:** naam, e-mailadres, telefoonnummer en bericht. Alleen
+"Onderwerp" is optioneel. Het telefoonnummer wordt ook licht gecontroleerd op
+vorm (minimaal 9 cijfers, buitenlandse nummers en notaties met spaties,
+streepjes of haakjes worden gewoon geaccepteerd).
+
 Het e-mailadres staat **niet** in de website. In plaats daarvan gebruikt het
 formulier een unieke FormSubmit-code (`data-code` in `contact.html`). Die code
 is aan het adres gekoppeld, maar er niet uit af te leiden.

@@ -87,7 +87,14 @@
               <input type="email" id="email" name="email" required />
             </div>
             <div class="field">
-              <label for="subject">Onderwerp</label>
+              <label for="phone">Telefoonnummer</label>
+              <input type="tel" id="phone" name="phone" required
+                     inputmode="tel" autocomplete="tel"
+                     placeholder="06 12 34 56 78" />
+              <p class="field-hint">Zo kunnen we je ook even bellen als dat sneller is.</p>
+            </div>
+            <div class="field">
+              <label for="subject">Onderwerp <span class="field-optional">optioneel</span></label>
               <input type="text" id="subject" name="subject" />
             </div>
             <div class="field">

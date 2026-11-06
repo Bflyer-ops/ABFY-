@@ -469,6 +469,29 @@ a { color: inherit; text-decoration: none; }
 .form-status.success { color: var(--green); font-weight: 500; }
 .form-status.error { color: #B4462C; }
 
+.field-hint {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin: 6px 0 0;
+}
+.field-optional {
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.field input.is-invalid,
+.field textarea.is-invalid {
+  border-color: #B4462C;
+  background: #FDF5F3;
+}
+.field-error {
+  font-size: 0.82rem;
+  color: #B4462C;
+  margin: 6px 0 0;
+}
+
 /* ==========================================================================
    Footer
    ========================================================================== */

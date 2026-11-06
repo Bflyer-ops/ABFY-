@@ -147,15 +147,68 @@
     return false;
   }
 
+  // Telefoonnummer: licht controleren op vorm. Het veld is verplicht (dat
+  // regelt de browser via required); hier kijken we alleen of het nummer
+  // plausibel is. Bewust soepel, zodat ook buitenlandse nummers en notaties
+  // met spaties, streepjes of haakjes gewoon doorkomen.
+  function telefoonOngeldig(waarde) {
+    const schoon = String(waarde || '').replace(/[\s\-().]/g, '');
+    if (!/^\+?[0-9]+$/.test(schoon)) return 'Vul een telefoonnummer in met alleen cijfers.';
+    const cijfers = schoon.replace(/\D/g, '');
+    if (cijfers.length < 9) return 'Dit nummer lijkt te kort. Controleer het even.';
+    if (cijfers.length > 15) return 'Dit nummer lijkt te lang. Controleer het even.';
+    return null;
+  }
+
   function initContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) return;
     const status = document.getElementById('form-status');
     const button = form.querySelector('button[type="submit"]');
+    const telefoon = form.querySelector('#phone');
     const geopendOp = Date.now();
+
+    function toonVeldfout(veld, bericht) {
+      wisVeldfout(veld);
+      if (!bericht) return;
+      veld.classList.add('is-invalid');
+      veld.setAttribute('aria-invalid', 'true');
+      const p = document.createElement('p');
+      p.className = 'field-error';
+      p.id = veld.id + '-error';
+      p.textContent = bericht;
+      veld.setAttribute('aria-describedby', p.id);
+      veld.parentNode.appendChild(p);
+    }
+
+    function wisVeldfout(veld) {
+      veld.classList.remove('is-invalid');
+      veld.removeAttribute('aria-invalid');
+      veld.removeAttribute('aria-describedby');
+      const bestaand = veld.parentNode.querySelector('.field-error');
+      if (bestaand) bestaand.remove();
+    }
+
+    // Fout weghalen zodra de bezoeker corrigeert.
+    if (telefoon) {
+      telefoon.addEventListener('input', () => wisVeldfout(telefoon));
+    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      if (telefoon) {
+        const fout = telefoonOngeldig(telefoon.value);
+        if (fout) {
+          toonVeldfout(telefoon, fout);
+          telefoon.focus();
+          status.textContent = '';
+          status.className = 'form-status';
+          return;
+        }
+        wisVeldfout(telefoon);
+      }
+
       const data = new FormData(form);
 
       // Spam wordt stil geweigerd: de bot krijgt een "gelukt"-melding te zien,
