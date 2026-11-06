@@ -112,45 +112,26 @@
     observer.observe(rows[0].closest('.ledger-card'));
   }
 
-  // Contact form: verstuurt via FormSubmit naar de mailbox van ABFY.
+  // ==========================================================================
+  // Contactformulier
+  //
+  // Het formulier verstuurt als een gewone HTML-POST naar FormSubmit (zie het
+  // action-attribuut in contact.html). Geen achtergrondverzoek, dus geen CORS
+  // en geen stille fouten: lukt iets niet, dan toont FormSubmit zelf de reden.
+  // Na verzenden komt de bezoeker op bedankt.html.
+  //
+  // Dit script doet de controle VOORAF. Alles goed -> het formulier wordt
+  // gewoon verstuurd. Iets mis -> we houden het tegen en leggen uit wat.
   //
   // Spambescherming, vier lagen:
-  //  1. Het e-mailadres staat helemaal niet in de website (unieke code).
+  //  1. Het e-mailadres staat nergens in de website (unieke FormSubmit-code).
   //  2. Honeypot — een onzichtbaar veld dat alleen bots invullen.
-  //  3. Tijdslot — bots versturen binnen een seconde, mensen doen er langer over.
+  //  3. Tijdslot — bots versturen binnen enkele seconden, mensen niet.
   //  4. Linkfilter — berichten volgestopt met links zijn vrijwel altijd spam.
-  //
-  // Het formulier gebruikt de unieke FormSubmit-code (data-code). Het
-  // e-mailadres van ABFY komt daardoor nergens in de website voor.
-  function resolveEndpoint(form) {
-    const code = form.getAttribute('data-code');
-    if (!code) return null;
-    return 'https://formsubmit.co/ajax/' + code;
-  }
+  // ==========================================================================
 
-  function lijktOpSpam(data, geopendOp) {
-    // Honeypot ingevuld = bot.
-    if (data.get('_honey')) return true;
-
-    // Sneller dan 3 seconden ingevuld = bot. Een mens typt niet zo snel.
-    if (Date.now() - geopendOp < 3000) return true;
-
-    const bericht = String(data.get('message') || '');
-
-    // Drie of meer links in een bericht: vrijwel altijd spam.
-    const links = (bericht.match(/https?:\/\/|www\./gi) || []).length;
-    if (links >= 3) return true;
-
-    // Losse BBCode-links zijn een klassiek spampatroon.
-    if (/\[url[=\]]/i.test(bericht)) return true;
-
-    return false;
-  }
-
-  // Telefoonnummer: licht controleren op vorm. Het veld is verplicht (dat
-  // regelt de browser via required); hier kijken we alleen of het nummer
-  // plausibel is. Bewust soepel, zodat ook buitenlandse nummers en notaties
-  // met spaties, streepjes of haakjes gewoon doorkomen.
+  // Telefoonnummer licht controleren op vorm. Bewust soepel: buitenlandse
+  // nummers en notaties met spaties, streepjes of haakjes komen gewoon door.
   function telefoonOngeldig(waarde) {
     const schoon = String(waarde || '').replace(/[\s\-().]/g, '');
     if (!/^\+?[0-9]+$/.test(schoon)) return 'Vul een telefoonnummer in met alleen cijfers.';
@@ -160,11 +141,27 @@
     return null;
   }
 
+  function lijktOpSpam(form, geopendOp) {
+    const honey = form.querySelector('[name="_honey"]');
+    if (honey && honey.value) return true;
+
+    if (Date.now() - geopendOp < 3000) return true;
+
+    const veld = form.querySelector('[name="message"]');
+    const bericht = veld ? String(veld.value || '') : '';
+
+    const links = (bericht.match(/https?:\/\/|www\./gi) || []).length;
+    if (links >= 3) return true;
+
+    if (/\[url[=\]]/i.test(bericht)) return true;
+
+    return false;
+  }
+
   function initContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) return;
     const status = document.getElementById('form-status');
-    const button = form.querySelector('button[type="submit"]');
     const telefoon = form.querySelector('#phone');
     const geopendOp = Date.now();
 
@@ -189,74 +186,43 @@
       if (bestaand) bestaand.remove();
     }
 
-    // Fout weghalen zodra de bezoeker corrigeert.
     if (telefoon) {
       telefoon.addEventListener('input', () => wisVeldfout(telefoon));
     }
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    form.addEventListener('submit', (e) => {
+      // Spam: stil tegenhouden. De bot ziet een "gelukt"-melding en heeft niet
+      // door dat het bericht nergens heen gaat.
+      if (lijktOpSpam(form, geopendOp)) {
+        e.preventDefault();
+        if (status) {
+          status.textContent = 'Bedankt! Je bericht is verzonden.';
+          status.className = 'form-status success';
+        }
+        form.reset();
+        return;
+      }
 
+      // Telefoonnummer controleren.
       if (telefoon) {
         const fout = telefoonOngeldig(telefoon.value);
         if (fout) {
+          e.preventDefault();
           toonVeldfout(telefoon, fout);
           telefoon.focus();
-          status.textContent = '';
-          status.className = 'form-status';
+          if (status) {
+            status.textContent = '';
+            status.className = 'form-status';
+          }
           return;
         }
         wisVeldfout(telefoon);
       }
 
-      const data = new FormData(form);
-
-      // Spam wordt stil geweigerd: de bot krijgt een "gelukt"-melding te zien,
-      // zodat hij niet doorheeft dat hij tegengehouden is.
-      if (lijktOpSpam(data, geopendOp)) {
-        status.textContent = 'Bedankt! Je bericht is verzonden.';
-        status.className = 'form-status success';
-        form.reset();
-        return;
-      }
-
-      const endpoint = resolveEndpoint(form);
-      if (!endpoint) {
-        status.textContent =
-          'Het formulier is niet goed ingesteld. Stuur ons gerust een bericht via Instagram of Facebook.';
-        status.className = 'form-status error';
-        return;
-      }
-
-      data.append('_subject', 'Nieuw bericht via de ABFY-website');
-      data.append('_captcha', 'false');
-      data.append('_template', 'table');
-
-      status.textContent = 'Bezig met versturen...';
-      status.className = 'form-status';
-      if (button) button.disabled = true;
-
-      try {
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          body: data,
-          headers: { Accept: 'application/json' },
-        });
-
-        if (res.ok) {
-          status.textContent =
-            'Bedankt! Je bericht is verzonden — we nemen zo snel mogelijk contact met je op.';
-          status.className = 'form-status success';
-          form.reset();
-        } else {
-          throw new Error('Verzenden mislukt');
-        }
-      } catch (err) {
-        status.textContent =
-          'Er ging iets mis bij het versturen. Probeer het later nog eens, of stuur ons een bericht via Instagram of Facebook.';
-        status.className = 'form-status error';
-      } finally {
-        if (button) button.disabled = false;
+      // Alles in orde: het formulier wordt nu gewoon verstuurd naar FormSubmit.
+      if (status) {
+        status.textContent = 'Bezig met versturen...';
+        status.className = 'form-status';
       }
     });
   }

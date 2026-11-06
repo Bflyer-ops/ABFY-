@@ -608,3 +608,26 @@ a { color: inherit; text-decoration: none; }
   background: var(--paper-warm); border-radius: var(--radius);
   padding: 18px 22px; margin-top: 28px;
 }
+
+/* ==========================================================================
+   Bedankpagina
+   ========================================================================== */
+.bedankt { max-width: 620px; text-align: center; }
+.bedankt .eyebrow { justify-content: center; }
+.bedankt .lead { font-size: 1.1rem; color: var(--ink-soft); }
+.bedankt-vink {
+  width: 76px; height: 76px; margin: 0 auto 28px;
+  border-radius: 50%;
+  background: var(--mint);
+  color: var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; font-weight: 700;
+}
+.bedankt-acties {
+  display: flex; gap: 14px; justify-content: center;
+  flex-wrap: wrap; margin-top: 2em;
+}
+.bedankt-sluit {
+  margin-top: 2.6em; font-size: 0.92rem; color: var(--ink-soft);
+}
+.bedankt-sluit a { color: var(--green); font-weight: 600; }

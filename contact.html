@@ -77,7 +77,20 @@
             </dl>
           </div>
 
-          <form id="contact-form" class="contact-form" data-code="c1bc93c1ef29e2bdb5857100ead03d1e">
+          <!-- Het formulier verstuurt rechtstreeks naar FormSubmit (gewone POST,
+               geen achtergrondverzoek). Dat is de meest betrouwbare route: geen
+               CORS, en bij een probleem zie je de echte foutmelding.
+               Na verzenden komt de bezoeker op bedankt.html. -->
+          <form id="contact-form" class="contact-form"
+                action="https://formsubmit.co/c1bc93c1ef29e2bdb5857100ead03d1e"
+                method="POST">
+
+            <!-- Instellingen voor FormSubmit -->
+            <input type="hidden" name="_subject" value="Nieuw bericht via de ABFY-website" />
+            <input type="hidden" name="_next" value="https://www.abfy.nl/bedankt.html" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+
             <div class="field">
               <label for="name">Naam</label>
               <input type="text" id="name" name="name" required />

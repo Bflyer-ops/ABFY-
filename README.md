@@ -13,6 +13,7 @@ blog.html          Blogoverzicht
 blog-*.html        De drie blogartikelen
 socials.html       Instagram/Facebook
 contact.html       Contactformulier
+bedankt.html       Bevestiging na verzenden
 style.css          Alle styling
 components.js      Header/footer, navigatie, animatie, contactformulier
 ```
@@ -60,7 +61,14 @@ code niets te veranderen.
 ## Contactformulier
 
 Het formulier verstuurt berichten via FormSubmit naar de mailbox van ABFY.
-Het is geactiveerd en werkt — er hoeft niets meer te gebeuren.
+
+**Hoe het werkt:** het formulier doet een gewone HTML-POST naar FormSubmit
+(zie het `action`-attribuut in `contact.html`). Geen achtergrondverzoek, dus
+geen CORS-problemen en geen stille fouten. Na verzenden komt de bezoeker op
+`bedankt.html`.
+
+Gaat er iets mis, dan toont FormSubmit zelf de reden op het scherm — dat is
+bruikbare informatie, in tegenstelling tot een algemene foutmelding.
 
 **Verplichte velden:** naam, e-mailadres, telefoonnummer en bericht. Alleen
 "Onderwerp" is optioneel. Het telefoonnummer wordt ook licht gecontroleerd op
