@@ -158,6 +158,93 @@
     return false;
   }
 
+  function waardeVan(form, naam) {
+    const veld = form.querySelector('[name="' + naam + '"]');
+    return veld ? String(veld.value || '').trim() : '';
+  }
+
+  // De formulierdiensten, op volgorde van proberen. Reageert de eerste niet,
+  // dan gaat de site automatisch door naar de tweede. Elke dienst wil de
+  // gegevens net iets anders aangeleverd krijgen; dat staat hier per dienst.
+  function bouwDiensten(form, v) {
+    const lijst = [];
+    const onderwerpMail = 'Nieuw bericht via de ABFY-website';
+
+    // 1. Web3Forms
+    const key = form.getAttribute('data-web3forms-key');
+    if (key && key !== 'JOUW_ACCESS_KEY') {
+      lijst.push({
+        naam: 'Web3Forms',
+        url: 'https://api.web3forms.com/submit',
+        velden: {
+          access_key: key,
+          subject: onderwerpMail,
+          name: v.name,
+          email: v.email,
+          telefoonnummer: v.phone,
+          onderwerp: v.onderwerp,
+          message: v.message,
+        },
+        // Web3Forms kan 200 teruggeven met success:false; dat is ook een fout.
+        isGelukt: async (res) => {
+          if (!res.ok) return false;
+          try {
+            const json = await res.json();
+            return json && json.success === true;
+          } catch (e) {
+            return false;
+          }
+        },
+      });
+    }
+
+    // 2. FormSubmit (reserve)
+    const code = form.getAttribute('data-formsubmit-code');
+    if (code) {
+      lijst.push({
+        naam: 'FormSubmit',
+        url: 'https://formsubmit.co/ajax/' + code,
+        velden: {
+          name: v.name,
+          email: v.email,
+          telefoonnummer: v.phone,
+          onderwerp: v.onderwerp,
+          message: v.message,
+          _subject: onderwerpMail,
+          _template: 'table',
+          _captcha: 'false',
+        },
+        isGelukt: async (res) => res.ok,
+      });
+    }
+
+    return lijst;
+  }
+
+  // Eén poging bij één dienst, met tijdslimiet. Gooit een fout als het misgaat,
+  // zodat de aanroeper weet dat hij de volgende dienst moet proberen.
+  async function verstuurNaar(dienst) {
+    const data = new FormData();
+    Object.keys(dienst.velden).forEach((k) => data.append(k, dienst.velden[k]));
+
+    const afbreken = new AbortController();
+    const klok = setTimeout(() => afbreken.abort(), 12000);
+
+    try {
+      const res = await fetch(dienst.url, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' },
+        signal: afbreken.signal,
+      });
+      const ok = await dienst.isGelukt(res);
+      if (!ok) throw new Error('Status ' + res.status);
+      return true;
+    } finally {
+      clearTimeout(klok);
+    }
+  }
+
   function initContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) return;
@@ -243,45 +330,50 @@
         wisVeldfout(telefoon);
       }
 
-      const endpoint = form.getAttribute('data-endpoint');
-      if (!endpoint) {
-        // Geen endpoint ingesteld: val terug op een gewone verzending.
+      // Velden verzamelen. Per dienst bouwen we hier een eigen verzending van,
+      // zodat er geen vreemde technische velden in de mail belanden.
+      const velden = {
+        name: waardeVan(form, 'name'),
+        email: waardeVan(form, 'email'),
+        phone: waardeVan(form, 'phone'),
+        onderwerp: waardeVan(form, 'subject'),
+        message: waardeVan(form, 'message'),
+      };
+
+      const diensten = bouwDiensten(form, velden);
+      if (!diensten.length) {
+        // Niets ingesteld: val terug op een gewone verzending.
         form.submit();
         return;
       }
 
-      const data = new FormData(form);
       toonStatus('Bezig met versturen...', '');
       if (button) button.disabled = true;
 
-      // Tijdslimiet: hangt de formulierdienst, dan niet eindeloos wachten.
-      const afbreken = new AbortController();
-      const klok = setTimeout(() => afbreken.abort(), 15000);
+      let gelukt = false;
+      for (const dienst of diensten) {
+        try {
+          await verstuurNaar(dienst);
+          gelukt = true;
+          break;
+        } catch (err) {
+          if (window.console) {
+            console.warn('Verzenden via ' + dienst.naam + ' mislukt:', err.message);
+          }
+          // Volgende dienst proberen.
+        }
+      }
 
-      try {
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          body: data,
-          headers: { Accept: 'application/json' },
-          signal: afbreken.signal,
-        });
-        clearTimeout(klok);
-
-        if (!res.ok) throw new Error('Status ' + res.status);
-
-        // Gelukt: door naar de bedankpagina.
+      if (gelukt) {
         const bedankt = form.getAttribute('data-bedankt') || 'bedankt.html';
         window.location.href = bedankt;
-      } catch (err) {
-        clearTimeout(klok);
-        if (button) button.disabled = false;
-
-        // BELANGRIJK: het formulier wordt NIET geleegd. De bezoeker houdt zijn
-        // tekst, zodat hij het zo opnieuw kan proberen.
-        toonStoring();
-        // Voor het geval je later wilt nakijken wat er precies misging:
-        if (window.console) console.warn('Verzenden mislukt:', err);
+        return;
       }
+
+      if (button) button.disabled = false;
+      // BELANGRIJK: het formulier wordt NIET geleegd. De bezoeker houdt zijn
+      // tekst, zodat hij het zo opnieuw kan proberen.
+      toonStoring();
     });
   }
 

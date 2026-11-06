@@ -77,21 +77,26 @@
             </dl>
           </div>
 
-          <!-- Verzendt op de achtergrond naar FormSubmit. Lukt dat, dan gaat de
-               bezoeker naar bedankt.html. Lukt het niet (storing bij de
-               formulierdienst), dan blijft hij op deze pagina met zijn tekst
-               nog in het formulier, en krijgt hij alternatieven te zien.
+          <!-- Twee formulierdiensten achter elkaar. De site probeert eerst
+               Web3Forms; reageert die niet, dan automatisch FormSubmit. Pas
+               als beide plat liggen krijgt de bezoeker een storingsmelding,
+               met zijn tekst nog in het formulier.
 
-               Van dienst wisselen? Pas alleen data-endpoint hieronder aan.
-               Het action-attribuut dient als noodroute voor bezoekers zonder
-               JavaScript en moet dan dezelfde dienst aanwijzen. -->
+               De access key van Web3Forms staat hieronder ingevuld. Moet die
+               ooit vervangen worden: nieuwe sleutel ophalen via web3forms.com
+               en hier plakken. Zie README.md.
+
+               Het action-attribuut is de noodroute voor de enkeling zonder
+               JavaScript; die gaat rechtstreeks naar FormSubmit. -->
           <form id="contact-form" class="contact-form"
-                data-endpoint="https://formsubmit.co/ajax/c1bc93c1ef29e2bdb5857100ead03d1e"
+                data-web3forms-key="f87a75f3-a24b-4917-bd04-e4b453464639"
+                data-formsubmit-code="c1bc93c1ef29e2bdb5857100ead03d1e"
                 data-bedankt="bedankt.html"
                 action="https://formsubmit.co/c1bc93c1ef29e2bdb5857100ead03d1e"
                 method="POST">
 
-            <!-- Instellingen voor FormSubmit -->
+            <!-- Alleen voor de noodroute zonder JavaScript. Met JavaScript
+                 stelt het script de verzending zelf samen per dienst. -->
             <input type="hidden" name="_subject" value="Nieuw bericht via de ABFY-website" />
             <input type="hidden" name="_next" value="https://www.abfy.nl/bedankt.html" />
             <input type="hidden" name="_template" value="table" />

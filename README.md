@@ -60,41 +60,50 @@ code niets te veranderen.
 
 ## Contactformulier
 
-Het formulier verstuurt berichten via FormSubmit naar de mailbox van ABFY.
+Berichten komen binnen op **BK-abfy@hotmail.com**.
 
-**Hoe het werkt:** het bericht gaat op de achtergrond naar FormSubmit. Lukt
-dat, dan komt de bezoeker op `bedankt.html`. Lukt het niet, dan blijft hij op
-de contactpagina, **blijft zijn getypte tekst staan**, en krijgt hij uitleg
-plus een verwijzing naar Instagram en Facebook. Na 15 seconden zonder reactie
-stopt de poging vanzelf, zodat niemand eindeloos zit te wachten.
+### Twee diensten achter elkaar
+
+Het formulier gebruikt twee formulierdiensten:
+
+1. **Web3Forms** — de hoofdroute (250 berichten per maand gratis)
+2. **FormSubmit** — de reserve, springt automatisch bij
+
+Reageert Web3Forms niet binnen 12 seconden, dan probeert de site meteen
+FormSubmit. De bezoeker merkt daar niets van en komt gewoon op `bedankt.html`.
+Pas als **beide** diensten plat liggen krijgt hij een storingsmelding — en
+dan blijft zijn getypte tekst staan, zodat hij het zo opnieuw kan proberen.
+
+### Beide diensten staan aan
+
+De access key van Web3Forms is ingevuld, dus beide routes zijn actief. Er
+hoeft niets meer te gebeuren.
+
+Moet de sleutel ooit vervangen worden (ander mailadres, sleutel kwijt): haal
+een nieuwe op via [web3forms.com](https://web3forms.com) en vervang de waarde
+van `data-web3forms-key` in `contact.html`.
+
+### Van dienst wisselen
+
+Alles staat als attribuut op het `<form>` in `contact.html`:
+
+| Attribuut | Betekenis |
+|---|---|
+| `data-web3forms-key` | access key van Web3Forms (hoofdroute) |
+| `data-formsubmit-code` | unieke code van FormSubmit (reserve) |
+| `data-bedankt` | pagina na succesvol verzenden |
+| `action` | noodroute voor bezoekers zonder JavaScript |
+
+Leeg je een attribuut of laat je de placeholder staan, dan slaat de site die
+dienst over. Een derde dienst toevoegen kan in `components.js`, in de functie
+`bouwDiensten`.
 
 ### Als het versturen niet lukt
 
-FormSubmit is een gratis dienst en heeft af en toe storing. Zie je als
-bezoeker de melding "Het versturen lukt nu even niet", of krijg je bij
-rechtstreeks bezoek aan formsubmit.co een Cloudflare-foutpagina (error 502,
-520, 522), dan ligt het aan hen en niet aan de website. Meestal is het binnen
-een paar uur weer opgelost.
-
-### Van formulierdienst wisselen
-
-Zit je vaker zonder, dan kun je overstappen zonder de rest van de site aan te
-raken. In `contact.html` staan twee plekken met de huidige dienst:
-
-```html
-<form id="contact-form" class="contact-form"
-      data-endpoint="https://formsubmit.co/ajax/<code>"   <- hoofdroute
-      data-bedankt="bedankt.html"
-      action="https://formsubmit.co/<code>"               <- noodroute
-      method="POST">
-```
-
-Vervang beide adressen door die van de nieuwe dienst. Alternatieven die op
-dezelfde manier werken (formulier erheen sturen, zij mailen het door) zijn
-onder meer Formspree, Web3Forms en Getform; kijk even welke gratis grenzen ze
-hanteren. De verborgen velden die met een underscore beginnen (`_subject`,
-`_next`, `_template`, `_captcha`) zijn FormSubmit-specifiek — een andere
-dienst gebruikt andere namen, die staan in hun documentatie.
+Zie je toch de melding "Het versturen lukt nu even niet", dan lagen beide
+diensten tegelijk plat — zeldzaam. Krijg je bij rechtstreeks bezoek aan zo'n
+dienst een Cloudflare-foutpagina (error 502, 520, 522), dan ligt het aan hen
+en niet aan de website.
 
 ## Bescherming tegen spam
 

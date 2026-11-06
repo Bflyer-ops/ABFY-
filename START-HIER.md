@@ -32,6 +32,7 @@ changes**.
 - E-mailadres komt nergens in de website voor (unieke FormSubmit-code)
 - Adres Sikkelhof 30, 6418 JW Heerlen verwerkt in de site en de Google-data
 - Vier lagen spambescherming actief
+- Contactformulier met twee diensten: valt er een weg, dan springt de ander bij
 - Portretfoto's van Bjorn en Kitana geplaatst
 
 ## Wat er nog te doen is
